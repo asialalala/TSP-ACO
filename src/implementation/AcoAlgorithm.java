@@ -62,7 +62,7 @@ public class AcoAlgorithm {
                 // double pheromone = pheromoneMatrix[currentCity][i];
                 double pheromone = pheromoneMatrix[getIndex(currentCity, i)];
                 // double distance = distanceMatrix[currentCity][i];
-                double distance = cities.getDistance(currentCity, i);;
+                double distance = cities.getDistance(currentCity, i);
                 if (distance <= 0) {
                     return -1;
                 }
