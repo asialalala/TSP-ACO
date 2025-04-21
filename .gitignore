@@ -25,3 +25,6 @@ replay_pid*
 
 # vs code
 .vscode/settings.json
+
+# Ignore bin directory
+bin/

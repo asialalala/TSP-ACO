@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class Cities {
-    // private double[][] distanceMatrix;
     private double[] distanceMatrix;
     private Map<Integer, Pair<Integer, Integer>> coordinates;
     private List<Integer> cityKeys;
@@ -23,7 +22,6 @@ public class Cities {
         this.numberOfCities = coordinates.size();
         this.cityKeys = new ArrayList<>(coordinates.keySet());
         Collections.sort(this.cityKeys);
-        // distanceMatrix = new double[numberOfCities][numberOfCities];
         triangleSize = numberOfCities * (numberOfCities - 1) / 2;
         distanceMatrix = new double[triangleSize];
         initializeMatrix();
@@ -32,7 +30,6 @@ public class Cities {
     /**
      * Initialize the distance matrix with distances between cities
      */
-    // TODO initialize distance between cites from provided params (from a file?)
     private void initializeMatrix() {
         for (int i = 0; i < numberOfCities; i++) {
             int cityId1 = cityKeys.get(i);
@@ -47,45 +44,15 @@ public class Cities {
             }
         }
 
-//        for (int i = 0; i < numberOfCities; i++) {
-//            int cityId1 = cityKeys.get(i);
-//            Pair<Integer, Integer> coord1 = coordinates.get(cityId1);
-//
-//            for (int j = 0; j < numberOfCities; j++) {
-//                int cityId2 = cityKeys.get(j);
-//                if (i == j) {
-//                    distanceMatrix[i][j] = 0;
-//                } else if (distanceMatrix[i][j] == 0) {
-//                    Pair<Integer, Integer> coord2 = coordinates.get(cityId2);
-//                    double distance = euclideanDistance(coord1, coord2);
-//
-//                    distanceMatrix[i][j] = distance;
-//                    distanceMatrix[j][i] = distance;
-//                }
-//            }
-//        }
-//        // TODO use triangular matrix to save memory
-//        for (int i = 0; i < distanceMatrix.length; i++) {
-//            for (int j = 0; j < distanceMatrix[i].length; j++) {
-//                distanceMatrix[i][j] = -1; // Initialize with -1 to indicate no distance set
-//            }
-//        }
-//        // Set distances between cities
-//        // TODO use triangular matrix to save memory
-//        for (int i = 0; i < distanceMatrix.length; i++) {
-//            for (int j = 0; j < distanceMatrix[i].length; j++) {
-//                if (i == j) {
-//                    distanceMatrix[i][j] = 0; // Distance to itself is 0
-//                } else if (distanceMatrix[i][j] == -1) {
-//                    int dist = (i + j) * 10; // Example distance calculation
-//                    distanceMatrix[i][j] = dist;
-//                    distanceMatrix[j][i] = dist; // If the distance is symmetric
-//
-//                }
-//            }
-//        }
     }
 
+    /**
+     * Get the index in the distance matrix for the given city keys id
+     *
+     * @param i - first city key id
+     * @param j - second city key id
+     * @return the index in the distance matrix
+     */
     private int getIndex(int i, int j) {
         if (i < j) {
             int temp = i;
@@ -95,15 +62,30 @@ public class Cities {
         return (i * (i - 1)) / 2 + j;
     }
 
+    /**
+     * 
+     * @return number of cities
+     */
     public int getNumberOfCities() {
         return numberOfCities;
     }
 
+    /**
+     * Get the distance between two cities
+     *
+     * @param i - first city index
+     * @param j - second city index
+     * @return the distance between the two cities
+     */
     public double getDistance(int i, int j) {
-        if (i == j) return 0.0;
+        if (i == j)
+            return 0.0;
         return distanceMatrix[getIndex(i, j)];
     }
 
+    /**
+     * Print the distance matrix
+     */
     public void printMatrix() {
         for (int i = 0; i < numberOfCities; i++) {
             for (int j = 0; j < numberOfCities; j++) {
@@ -113,33 +95,25 @@ public class Cities {
         }
     }
 
-//    /**
-//     * Print the distance matrix
-//     */
-//    public void printMatrix() {
-//        for (double[] row : distanceMatrix) {
-//            for (double value : row) {
-//                System.out.print(value + " ");
-//            }
-//            System.out.println();
-//        }
-//    }
-
     /**
      * Get the distance matrix
      * 
      * @return the distance matrix
      */
-//    public double[][] getMatrix() {
-//        return distanceMatrix;
-//    }
     public double[] getMatrix() {
         return distanceMatrix;
     }
 
+    /**
+     * Get the distance between a and b
+     * 
+     * @param a - the first city
+     * @param b - the second city
+     * @return the coordinates of the cities
+     */
     private double euclideanDistance(Pair<Integer, Integer> a, Pair<Integer, Integer> b) {
         int dx = a.getFirst() - b.getFirst();
         int dy = a.getSecond() - b.getSecond();
-        return Math.sqrt(dx * dx + dy * dy);
+        return Math.sqrt((double) (dx * dx) + dy * dy);
     }
 }

@@ -2,9 +2,7 @@ package implementation;
 
 public class AcoAlgorithm {
     private Cities cities;
-    // private double[][] pheromoneMatrix;
     private double[] pheromoneMatrix;
-    // private double[][] distanceMatrix;
     private int numCities;
     private int pheromoneAmount;
     private int numAnts;
@@ -24,26 +22,16 @@ public class AcoAlgorithm {
     public AcoAlgorithm(Cities cities, int pheromoneAmount, int numAnts, int numIterations) {
         this.cities = cities;
         this.pheromoneAmount = pheromoneAmount;
-        // this.distanceMatrix = cities.getMatrix();
-        // this.numCities = distanceMatrix.length;
         this.numCities = cities.getNumberOfCities();
         this.numAnts = numAnts;
         this.numIterations = numIterations;
 
         // Initialize pheromone matrix
-        // TODO use triangular matrix to save memory
-
         int triangleSize = numCities * (numCities - 1) / 2;
         this.pheromoneMatrix = new double[triangleSize];
         for (int i = 0; i < triangleSize; i++) {
             pheromoneMatrix[i] = 1.0;
         }
-
-//        for (int i = 0; i < numCities; i++) {
-//            for (int j = 0; j < numCities; j++) {
-//                pheromoneMatrix[i][j] = 1.0; // Initial pheromone level
-//            }
-//        }
     }
 
     /**
@@ -59,9 +47,7 @@ public class AcoAlgorithm {
         double sum = 0;
         for (int i = 0; i < numCities; i++) {
             if (!visitedCities[i]) {
-                // double pheromone = pheromoneMatrix[currentCity][i];
                 double pheromone = pheromoneMatrix[getIndex(currentCity, i)];
-                // double distance = distanceMatrix[currentCity][i];
                 double distance = cities.getDistance(currentCity, i);
                 if (distance <= 0) {
                     return -1;
@@ -78,9 +64,7 @@ public class AcoAlgorithm {
         double decisionSum = 0;
         for (int i = 0; i < numCities; i++) {
             if (!visitedCities[i]) {
-                // double pheromone = pheromoneMatrix[currentCity][i];
                 double pheromone = pheromoneMatrix[getIndex(currentCity, i)];
-                // double distance = distanceMatrix[currentCity][i];
                 double distance = cities.getDistance(currentCity, i);
                 if (distance <= 0) {
                     return -1;
@@ -89,16 +73,14 @@ public class AcoAlgorithm {
                 decisionSum += decisionVector[i];
             }
         }
-        if(decisionSum <= 0) {
+        if (decisionSum <= 0) {
             return -1;
         }
 
         // Choose the next city based on the decision vector
         double[] probabilities = new double[numCities];
         int nextCity = 0;
-        // double highestProbability = probabilities[0];
         double highestProbability = -1.0;
-
 
         for (int i = 0; i < numCities; i++) {
             if (!visitedCities[i]) {
@@ -120,12 +102,10 @@ public class AcoAlgorithm {
      * 
      * @param visitedCities the array of visited cities
      */
-    // TODO use triangular matrix to save memory
     private void updatePheromones(boolean[] visitedCities) {
         for (int i = 0; i < numCities; i++) {
             for (int j = 0; j < numCities; j++) {
                 if (i != j && visitedCities[i] && visitedCities[j]) {
-                    // pheromoneMatrix[i][j] += pheromoneAmount / distanceMatrix[i][j];
                     pheromoneMatrix[getIndex(i, j)] += pheromoneAmount / cities.getDistance(i, j);
                 }
             }
@@ -139,17 +119,11 @@ public class AcoAlgorithm {
         for (int i = 0; i < pheromoneMatrix.length; i++) {
             pheromoneMatrix[i] *= 0.9;
         }
-//        for (int i = 0; i < numCities; i++) {
-//            for (int j = 0; j < numCities; j++) {
-//                this.pheromoneMatrix[i][j] *= 0.9; // Example evaporation rate
-//            }
-//        }
     }
 
     /**
      * Runs the ACO algorithm to find the best path
      */
-    // TODO add iterations over the ants loop
     public void runAlgorithm() {
         for (int iteration = 0; iteration < this.numIterations; iteration++) {
             for (int ant = 0; ant < this.numAnts; ant++) {
@@ -160,7 +134,6 @@ public class AcoAlgorithm {
                 visitedCities[currentCity] = true;
 
                 boolean success = true;
-                // for (int step = 1; step < numCities - 1; step++) {
                 for (int step = 1; step < numCities; step++) {
                     int nextCity = chooseNextCity(currentCity, visitedCities);
                     if (nextCity == -1) { // no move possible
@@ -170,9 +143,6 @@ public class AcoAlgorithm {
                     path[step] = nextCity;
                     visitedCities[nextCity] = true;
                     currentCity = nextCity;
-
-//                    currentCity = chooseNextCity(currentCity, visitedCities);
-//                    visitedCities[currentCity] = true;
                 }
 
                 if (success) {
@@ -183,30 +153,10 @@ public class AcoAlgorithm {
                     }
                     updatePheromones(visitedCities);
                 }
-
-                // updatePheromones(visitedCities);
             }
 
             evaporatePheromones();
         }
-
-//        // Main ACO loop
-//        for (int ant = 0; ant < this.numAnts; ant++) {
-//            // Initialize base city randomly for each ant
-//            boolean[] visitedCities = new boolean[numCities];
-//            int currentCity = (int) (Math.random() * numCities);
-//            visitedCities[currentCity] = true;
-//
-//            // Construct solution (visitedCities)
-//            for (int step = 0; step < numCities - 1; step++) {
-//                currentCity = chooseNextCity(currentCity, visitedCities);
-//                visitedCities[currentCity] = true;
-//            }
-//
-//            updatePheromones(visitedCities);
-//        }
-//
-//        evaporatePheromones();
     }
 
     private double calculateTotalDistance(int[] path) {
@@ -214,8 +164,8 @@ public class AcoAlgorithm {
         for (int i = 0; i < path.length - 1; i++) {
             total += cities.getDistance(path[i], path[i + 1]);
         }
-        // Dla zamknięcia cyklu:
-        total +=  cities.getDistance(path[path.length - 1], path[0]);
+        // Add distance from last city to the first city to complete the cycle
+        total += cities.getDistance(path[path.length - 1], path[0]);
         return total;
     }
 
