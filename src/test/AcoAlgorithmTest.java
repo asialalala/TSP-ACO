@@ -1,8 +1,12 @@
 package test;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Map;
 
+import implementation.Pair;
+import implementation.TSPReader;
 import org.junit.Test;
 
 import implementation.AcoAlgorithm;
@@ -10,11 +14,13 @@ import implementation.Cities;
 
 public class AcoAlgorithmTest {
 
-    private Cities cities = new Cities(3);
-    private AcoAlgorithm acoAlgorithm = new AcoAlgorithm(cities, 1, 1, 1);
-    
-    @Test 
-    public void testChooseNextCity() {
+    @Test
+    public void testChooseNextCity() throws IOException {
+        TSPReader tspReader = new TSPReader();
+        Map<Integer, Pair<Integer, Integer>> coordinates = tspReader.readTSPFile("src/data/smallerTSPs/xqf131.tsp");
+
+        Cities cities = new Cities(coordinates);
+        AcoAlgorithm acoAlgorithm = new AcoAlgorithm(cities, 1, 1, 1);
         // Arrange
         boolean[] visitedCities = new boolean[cities.getMatrix().length];
         visitedCities[0] = true; // Mark the first city as visited
@@ -23,7 +29,7 @@ public class AcoAlgorithmTest {
         Method chooseNextCity = null;
         try {
             chooseNextCity = AcoAlgorithm.class.getDeclaredMethod("chooseNextCity", int.class, boolean[].class);
-
+            chooseNextCity.setAccessible(true); // Allow access to private method
         } catch (Exception e) {
             e.printStackTrace();
         }
