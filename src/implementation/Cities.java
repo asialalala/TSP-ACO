@@ -18,12 +18,14 @@ public class Cities {
      */
     // TODO initialize distance between cites from provided params (from a file?)
     private void initializeMatrix() {
+        // TODO use triangular matrix to save memory
         for (int i = 0; i < distanceMatrix.length; i++) {
             for (int j = 0; j < distanceMatrix[i].length; j++) {
                 distanceMatrix[i][j] = -1; // Initialize with -1 to indicate no distance set
             }
         }
         // Set distances between cities
+        // TODO use triangular matrix to save memory
         for (int i = 0; i < distanceMatrix.length; i++) {
             for (int j = 0; j < distanceMatrix[i].length; j++) {
                 if (i == j) {
