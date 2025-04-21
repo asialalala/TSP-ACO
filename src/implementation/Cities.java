@@ -1,8 +1,9 @@
+package implementation;
 public class Cities {
-    private int[][] distanceMatrix;
+    private double[][] distanceMatrix;
 
     public Cities(int size) {
-        distanceMatrix = new int[size][size];
+        distanceMatrix = new double[size][size];
         initializeMatrix();
     }
 
@@ -28,15 +29,15 @@ public class Cities {
     }
 
     public void printMatrix() {
-        for (int[] row : distanceMatrix) {
-            for (int value : row) {
+        for (double[] row : distanceMatrix) {
+            for (double value : row) {
                 System.out.print(value + " ");
             }
             System.out.println();
         }
     }
 
-    public int[][] getMatrix() {
+    public double[][] getMatrix() {
         return distanceMatrix;
     }
 }
