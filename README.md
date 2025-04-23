@@ -1,13 +1,13 @@
 ## Description
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+This repository contains an implementation of the Ant Colony Optimization (ACO) algorithm for solving the Traveling Salesman Problem (TSP).
 
 ## Folder Structure
 
 The workspace contains two folders by default, where:
 
 - `src`: the folder to maintain sources
-  - `implementation`: the folder with implementation of the problem and the algorithm
+  - `implementation`: the folder with the implementation of the problem and the algorithm
   - `test`: the folder with unit tests for the implementation
 - `lib`: the folder to maintain dependencies
 
@@ -46,7 +46,5 @@ double bestDistance = aco.getBestDistance();
 
 System.out.println("Best Path: " + Arrays.toString(bestPath));
 System.out.println("Best Distance: " + bestDistance);
-
-
 ```
 
