@@ -39,7 +39,7 @@ public class Cities {
                 int cityId2 = cityKeys.get(j);
                 Pair<Integer, Integer> coord2 = coordinates.get(cityId2);
 
-                double distance = euclideanDistance(coord1, coord2);
+                double distance = Utility.euclideanDistance(coord1, coord2);
                 distanceMatrix[getIndex(i, j)] = distance;
             }
         }
@@ -102,18 +102,5 @@ public class Cities {
      */
     public double[] getMatrix() {
         return distanceMatrix;
-    }
-
-    /**
-     * Get the distance between a and b
-     * 
-     * @param a - the first city
-     * @param b - the second city
-     * @return the coordinates of the cities
-     */
-    private double euclideanDistance(Pair<Integer, Integer> a, Pair<Integer, Integer> b) {
-        int dx = a.getFirst() - b.getFirst();
-        int dy = a.getSecond() - b.getSecond();
-        return Math.sqrt((double) (dx * dx) + dy * dy);
     }
 }

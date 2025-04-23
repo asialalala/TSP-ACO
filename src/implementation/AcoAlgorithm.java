@@ -50,7 +50,7 @@ public class AcoAlgorithm {
         double sum = 0;
         for (int i = 0; i < numCities; i++) {
             if (!visitedCities[i]) {
-                double pheromone = pheromoneMatrix[getIndex(currentCity, i)];
+                double pheromone = pheromoneMatrix[Utility.getIndex(currentCity, i)];
                 double distance = cities.getDistance(currentCity, i);
                 if (distance <= 0) {
                     return -1;
@@ -67,7 +67,7 @@ public class AcoAlgorithm {
         double decisionSum = 0;
         for (int i = 0; i < numCities; i++) {
             if (!visitedCities[i]) {
-                double pheromone = pheromoneMatrix[getIndex(currentCity, i)];
+                double pheromone = pheromoneMatrix[Utility.getIndex(currentCity, i)];
                 double distance = cities.getDistance(currentCity, i);
                 if (distance <= 0) {
                     return -1;
@@ -109,7 +109,7 @@ public class AcoAlgorithm {
         for (int i = 0; i < numCities; i++) {
             for (int j = 0; j < numCities; j++) {
                 if (i != j && visitedCities[i] && visitedCities[j]) {
-                    pheromoneMatrix[getIndex(i, j)] += pheromoneAmount / cities.getDistance(i, j);
+                    pheromoneMatrix[Utility.getIndex(i, j)] += pheromoneAmount / cities.getDistance(i, j);
                 }
             }
         }
@@ -178,17 +178,5 @@ public class AcoAlgorithm {
 
     public double getBestDistance() {
         return bestDistance;
-    }
-
-    private int getIndex(int i, int j) {
-        if (i == j) {
-            return -1; // No distance to itself in the pheromone matrix
-        }
-        if (i < j) {
-            int temp = i;
-            i = j;
-            j = temp;
-        }
-        return i * (i - 1) / 2 + j;
     }
 }
