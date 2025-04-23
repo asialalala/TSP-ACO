@@ -14,13 +14,11 @@ public class App {
         System.out.println("\n== Sample Distance ==");
         System.out.println("Distance between city 1 and city 2: " + cities.getDistance(0, 1));
         System.out.println("Distance between city 2 and city 5: " + cities.getDistance(1, 4));
-//        System.out.println("Distance between city 0 and city 1: " + cities.getMatrix()[1][0]);
-//        System.out.println("Distance between city 0 and city 1: " + cities.getMatrix()[0][1]);
 
         // Start ACO Algorithm
         System.out.println("\n== Running ACO Algorithm ==");
 
-        AcoAlgorithm aco = new AcoAlgorithm(cities, 100, 50, 100);
+        AcoAlgorithm aco = new AcoAlgorithm(cities, 100, 50, 100,1);
         aco.runAlgorithm();
 
         int[] bestPath = aco.getBestPath();

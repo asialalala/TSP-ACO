@@ -7,7 +7,7 @@ public class AcoAlgorithm {
     private int pheromoneAmount;
     private int numAnts;
     private int numIterations;
-
+    private int beta;
     private int[] bestPath;
     private double bestDistance = Double.MAX_VALUE;
 
@@ -18,13 +18,16 @@ public class AcoAlgorithm {
      * @param pheromoneAmount the amount of pheromone to be used
      * @param numAnts         the number of ants to be used
      * @param numIterations   the number of iterations to be performed
+     * @param beta           the parameter for distance influence
      */
-    public AcoAlgorithm(Cities cities, int pheromoneAmount, int numAnts, int numIterations) {
+
+    public AcoAlgorithm(Cities cities, int pheromoneAmount, int numAnts, int numIterations, int beta) {
         this.cities = cities;
         this.pheromoneAmount = pheromoneAmount;
         this.numCities = cities.getNumberOfCities();
         this.numAnts = numAnts;
         this.numIterations = numIterations;
+        this.beta = beta;
 
         // Initialize pheromone matrix
         int triangleSize = numCities * (numCities - 1) / 2;
@@ -43,7 +46,7 @@ public class AcoAlgorithm {
      */
     // TODO try to decrise number of loops or devide it to methods
     private int chooseNextCity(int currentCity, boolean[] visitedCities) {
-        // Count the sum of pheromone/distance for unvisited cities
+        // Count the sum of pheromone/(distance^beta) for unvisited cities
         double sum = 0;
         for (int i = 0; i < numCities; i++) {
             if (!visitedCities[i]) {
@@ -52,7 +55,7 @@ public class AcoAlgorithm {
                 if (distance <= 0) {
                     return -1;
                 }
-                sum += pheromone / distance;
+                sum += pheromone / Math.pow(distance, beta);
             }
         }
         if (sum <= 0) {
@@ -69,7 +72,7 @@ public class AcoAlgorithm {
                 if (distance <= 0) {
                     return -1;
                 }
-                decisionVector[i] = (pheromone / distance) / sum;
+                decisionVector[i] = (pheromone / Math.pow(distance, beta)) / sum;
                 decisionSum += decisionVector[i];
             }
         }
