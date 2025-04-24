@@ -18,6 +18,8 @@ public abstract class AcoAlgorithm {
     public abstract void runAlgorithm();
 
     protected abstract void updatePheromones(boolean[] visitedCities, double distance);
+    protected abstract void updatePheromones(int currentCity, int nextCity);
+
 
     /**
      * Constructor to initialize the ACO algorithm

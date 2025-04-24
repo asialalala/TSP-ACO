@@ -52,6 +52,14 @@ public class AcoAlgorithmMorePheromoneWhenBetterSolution extends AcoAlgorithm {
     }
 
     /**
+     * This method is not used in this algorithm.
+     */
+    @Override
+    protected void updatePheromones(int currentCity, int nextCity){
+        throw new UnsupportedOperationException("Invalid operation for update pheromones.");
+    }
+
+    /**
      * Runs the ACO algorithm to find the best path. Pheromones are updated after
      * each ant's solution.
      * For better solution pheromones are multiplied by the given factor.

@@ -20,6 +20,7 @@ public class AcoAlgorithmConstPheromoneAfterSolution extends AcoAlgorithm {
         super(cities, pheromoneAmount, numAnts, numIterations, beta);
     }
 
+
     /**
      * Updates pheromone levels based on the solution found by the ant.
      * The amount of pheromones is const for every visited edge and depends on the
@@ -37,6 +38,14 @@ public class AcoAlgorithmConstPheromoneAfterSolution extends AcoAlgorithm {
                 }
             }
         }
+    }
+
+    /**
+     * This method is not used in this algorithm.
+     */
+    @Override
+    protected void updatePheromones(int currentCity, int nextCity){
+        throw new UnsupportedOperationException("Invalid operation for update pheromones.");
     }
 
     /**
