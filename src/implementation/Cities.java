@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Cities {
-    private double[] distanceMatrix;
-    private Map<Integer, Pair<Integer, Integer>> coordinates;
+    private int[] distanceMatrix;
+    private Map<Integer, Coordinates<Integer, Integer>> coordinates;
     private List<Integer> cityKeys;
     private final int numberOfCities;
     private final int triangleSize;
@@ -17,13 +17,13 @@ public class Cities {
      *
      * @param coordinates - coordinates of all cities
      */
-    public Cities(Map<Integer, Pair<Integer, Integer>> coordinates) {
+    public Cities(Map<Integer, Coordinates<Integer, Integer>> coordinates) {
         this.coordinates = coordinates;
         this.numberOfCities = coordinates.size();
         this.cityKeys = new ArrayList<>(coordinates.keySet());
         Collections.sort(this.cityKeys);
         triangleSize = numberOfCities * (numberOfCities - 1) / 2;
-        distanceMatrix = new double[triangleSize];
+        distanceMatrix = new int[triangleSize];
         initializeMatrix();
     }
 
@@ -33,13 +33,13 @@ public class Cities {
     private void initializeMatrix() {
         for (int i = 0; i < numberOfCities; i++) {
             int cityId1 = cityKeys.get(i);
-            Pair<Integer, Integer> coord1 = coordinates.get(cityId1);
+            Coordinates<Integer, Integer> coord1 = coordinates.get(cityId1);
 
             for (int j = 0; j < i; j++) {
                 int cityId2 = cityKeys.get(j);
-                Pair<Integer, Integer> coord2 = coordinates.get(cityId2);
+                Coordinates<Integer, Integer> coord2 = coordinates.get(cityId2);
 
-                double distance = Utility.euclideanDistance(coord1, coord2);
+                int distance = Utilities.euclideanDistance(coord1, coord2);
                 distanceMatrix[getIndex(i, j)] = distance;
             }
         }
@@ -77,9 +77,9 @@ public class Cities {
      * @param j - second city index
      * @return the distance between the two cities
      */
-    public double getDistance(int i, int j) {
+    public int getDistance(int i, int j) {
         if (i == j)
-            return 0.0;
+            return 0;
         return distanceMatrix[getIndex(i, j)];
     }
 
@@ -100,7 +100,7 @@ public class Cities {
      * 
      * @return the distance matrix
      */
-    public double[] getMatrix() {
+    public int[] getMatrix() {
         return distanceMatrix;
     }
 }

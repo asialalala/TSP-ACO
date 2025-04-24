@@ -9,7 +9,7 @@ public class AcoAlgorithm {
     private int numIterations;
     private int beta;
     private int[] bestPath;
-    private double bestDistance = Double.MAX_VALUE;
+    private int bestDistance = Integer.MAX_VALUE;
 
     /**
      * Constructor to initialize the ACO algorithm
@@ -50,8 +50,8 @@ public class AcoAlgorithm {
         double sum = 0;
         for (int i = 0; i < numCities; i++) {
             if (!visitedCities[i]) {
-                double pheromone = pheromoneMatrix[Utility.getIndex(currentCity, i)];
-                double distance = cities.getDistance(currentCity, i);
+                double pheromone = pheromoneMatrix[Utilities.getIndex(currentCity, i)];
+                int distance = cities.getDistance(currentCity, i);
                 if (distance <= 0) {
                     return -1;
                 }
@@ -67,8 +67,8 @@ public class AcoAlgorithm {
         double decisionSum = 0;
         for (int i = 0; i < numCities; i++) {
             if (!visitedCities[i]) {
-                double pheromone = pheromoneMatrix[Utility.getIndex(currentCity, i)];
-                double distance = cities.getDistance(currentCity, i);
+                double pheromone = pheromoneMatrix[Utilities.getIndex(currentCity, i)];
+                int distance = cities.getDistance(currentCity, i);
                 if (distance <= 0) {
                     return -1;
                 }
@@ -109,7 +109,7 @@ public class AcoAlgorithm {
         for (int i = 0; i < numCities; i++) {
             for (int j = 0; j < numCities; j++) {
                 if (i != j && visitedCities[i] && visitedCities[j]) {
-                    pheromoneMatrix[Utility.getIndex(i, j)] += pheromoneAmount / cities.getDistance(i, j);
+                    pheromoneMatrix[Utilities.getIndex(i, j)] += pheromoneAmount / (double) cities.getDistance(i, j);
                 }
             }
         }
@@ -149,7 +149,7 @@ public class AcoAlgorithm {
                 }
 
                 if (success) {
-                    double distance = calculateTotalDistance(path);
+                    int distance = calculateTotalDistance(path);
                     if (distance < bestDistance) {
                         bestDistance = distance;
                         bestPath = path.clone();
@@ -162,8 +162,8 @@ public class AcoAlgorithm {
         }
     }
 
-    private double calculateTotalDistance(int[] path) {
-        double total = 0;
+    private int calculateTotalDistance(int[] path) {
+        int total = 0;
         for (int i = 0; i < path.length - 1; i++) {
             total += cities.getDistance(path[i], path[i + 1]);
         }
@@ -176,7 +176,7 @@ public class AcoAlgorithm {
         return bestPath;
     }
 
-    public double getBestDistance() {
+    public int getBestDistance() {
         return bestDistance;
     }
 }

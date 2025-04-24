@@ -1,8 +1,8 @@
 package implementation;
 
-public final class Utility {
+public final class Utilities {
 
-    private Utility() {
+    private Utilities() {
     }
 
     /**
@@ -32,9 +32,9 @@ public final class Utility {
      * @param b - the second city
      * @return the coordinates of the cities
      */
-    public static double euclideanDistance(Pair<Integer, Integer> a, Pair<Integer, Integer> b) {
+    public static int euclideanDistance(Coordinates<Integer, Integer> a, Coordinates<Integer, Integer> b) {
         int dx = a.getFirst() - b.getFirst();
         int dy = a.getSecond() - b.getSecond();
-        return Math.sqrt((double) (dx * dx) + dy * dy);
+        return (int) Math.round(Math.sqrt((double) (dx * dx) + dy * dy));
     }
 }

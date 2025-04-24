@@ -2,7 +2,7 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
-import implementation.Pair;
+import implementation.Coordinates;
 import implementation.TSPReader;
 import org.junit.Test;
 
@@ -15,11 +15,11 @@ public class CitiesTest {
     @Test
     public void testInitializeMatrix() throws IOException {
         TSPReader tspReader = new TSPReader();
-        Map<Integer, Pair<Integer, Integer>> coordinates = tspReader.readTSPFile("src/data/smallerTSPs/xqf131.tsp");
+        Map<Integer, Coordinates<Integer, Integer>> coordinates = tspReader.readTSPFile("src/data/smallerTSPs/xqf131.tsp");
 
         // Arrange and act
         Cities cities = new Cities(coordinates);
-        double[] matrix = cities.getMatrix();
+        int[] matrix = cities.getMatrix();
 
         // Assert
         int numCities = cities.getNumberOfCities();

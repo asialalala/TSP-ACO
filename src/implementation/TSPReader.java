@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.*;
 
 public class TSPReader {
-    public Map<Integer, Pair<Integer, Integer>> readTSPFile(String filePath) throws IOException {
-        Map<Integer, Pair<Integer, Integer>> coordinates = new HashMap<>();
+    public Map<Integer, Coordinates<Integer, Integer>> readTSPFile(String filePath) throws IOException {
+        Map<Integer, Coordinates<Integer, Integer>> coordinates = new HashMap<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
@@ -25,7 +25,7 @@ public class TSPReader {
                         int node = Integer.parseInt(parts[0]);
                         int x = (int) Double.parseDouble(parts[1]);
                         int y = (int) Double.parseDouble(parts[2]);
-                        coordinates.put(node, new Pair<>(x, y));
+                        coordinates.put(node, new Coordinates<>(x, y));
                     }
                 }
             }
@@ -34,8 +34,8 @@ public class TSPReader {
         return coordinates;
     }
 
-    public void printCoordinates(Map<Integer, Pair<Integer, Integer>> coordinates) {
-        for (Map.Entry<Integer, Pair<Integer, Integer>> entry : coordinates.entrySet()) {
+    public void printCoordinates(Map<Integer, Coordinates<Integer, Integer>> coordinates) {
+        for (Map.Entry<Integer, Coordinates<Integer, Integer>> entry : coordinates.entrySet()) {
             System.out.println(entry.getKey() + " " + entry.getValue());
         }
     }

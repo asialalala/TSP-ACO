@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import implementation.Pair;
+import implementation.Coordinates;
 import implementation.TSPReader;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class AcoAlgorithmTest {
     public void testChooseNextCity() throws IOException {
         // Arrange
         TSPReader tspReader = new TSPReader();
-        Map<Integer, Pair<Integer, Integer>> coordinates = tspReader.readTSPFile("src/data/smallerTSPs/test.tsp");
+        Map<Integer, Coordinates<Integer, Integer>> coordinates = tspReader.readTSPFile("src/data/smallerTSPs/test.tsp");
 
         Cities cities = new Cities(coordinates);
         AcoAlgorithm acoAlgorithm = new AcoAlgorithm(cities, 1, 1, 1,1);
