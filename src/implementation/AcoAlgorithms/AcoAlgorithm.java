@@ -1,7 +1,10 @@
-package implementation;
+package implementation.AcoAlgorithms;
+
+import implementation.Cities;
+import implementation.Utility;
 
 public abstract class AcoAlgorithm {
- 
+
     protected Cities cities;
     protected double[] pheromoneMatrix;
     protected int numCities;
@@ -13,7 +16,8 @@ public abstract class AcoAlgorithm {
     protected double bestDistance = Double.MAX_VALUE;
 
     public abstract void runAlgorithm();
-    protected abstract void updatePheromones(boolean[] visitedCities);
+
+    protected abstract void updatePheromones(boolean[] visitedCities, double distance);
 
     /**
      * Constructor to initialize the ACO algorithm
@@ -22,7 +26,7 @@ public abstract class AcoAlgorithm {
      * @param pheromoneAmount the amount of pheromone to be used
      * @param numAnts         the number of ants to be used
      * @param numIterations   the number of iterations to be performed
-     * @param beta           the parameter for distance influence
+     * @param beta            the parameter for distance influence
      */
     AcoAlgorithm(Cities cities, int pheromoneAmount, int numAnts, int numIterations, int beta) {
         this.cities = cities;
