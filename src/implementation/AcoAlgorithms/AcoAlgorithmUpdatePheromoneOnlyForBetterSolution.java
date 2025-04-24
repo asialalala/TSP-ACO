@@ -1,6 +1,7 @@
 package implementation.AcoAlgorithms;
 
 import implementation.Cities;
+import implementation.Utility;
 
 public class AcoAlgorithmUpdatePheromoneOnlyForBetterSolution extends AcoAlgorithm {
 
@@ -20,10 +21,11 @@ public class AcoAlgorithmUpdatePheromoneOnlyForBetterSolution extends AcoAlgorit
      */
     @Override
     protected void updatePheromones(boolean[] visitedCities, double distance) {
-        if (distance < bestDistance) {
-            for (int i = 0; i < visitedCities.length; i++) {
-                if (visitedCities[i]) {
-                    pheromoneMatrix[i] += pheromoneAmount / distance;
+        double deltaPheromone = pheromoneAmount / distance;
+        for (int i = 0; i < numCities; i++) {
+            for (int j = 0; j < numCities; j++) {
+                if (i != j && visitedCities[i] && visitedCities[j]) {
+                    pheromoneMatrix[Utility.getIndex(i, j)] += deltaPheromone;
                 }
             }
         }
