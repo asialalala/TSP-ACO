@@ -3,9 +3,9 @@ package implementation.AcoAlgorithms;
 import implementation.Cities;
 import implementation.Utility;
 
-public class AcoAlgorithmConstPheromoneUpdateForEveryEdge extends AcoAlgorithm {
+public class AcoConstPheromoneUpdateForEveryEdge extends AcoAlgorithm {
 
-    public AcoAlgorithmConstPheromoneUpdateForEveryEdge(Cities cities, int pheromoneAmount, int numAnts,
+    public AcoConstPheromoneUpdateForEveryEdge(Cities cities, int pheromoneAmount, int numAnts,
             int numIterations, int beta) {
         super(cities, pheromoneAmount, numAnts, numIterations, beta);
     }

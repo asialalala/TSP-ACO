@@ -3,9 +3,7 @@ package implementation.AcoAlgorithms;
 import implementation.Cities;
 import implementation.Utility;
 
-public class AcoAlgorithmMorePheromoneWhenBetterSolution extends AcoAlgorithm {
-    private boolean isBetterSolution = false;
-    private double pheromoneFactor;
+public class AcoPheromoneUpdateBasedOnPathLength extends AcoAlgorithm {
 
     /**
      * Constructor to initialize the ACO algorithm
@@ -16,32 +14,23 @@ public class AcoAlgorithmMorePheromoneWhenBetterSolution extends AcoAlgorithm {
      * @param numIterations   the number of iterations to be performed
      * @param beta            the parameter for distance influence
      */
-    public AcoAlgorithmMorePheromoneWhenBetterSolution(Cities cities, int pheromoneAmount, int numAnts,
-            int numIterations,
-            int beta, double pheromoneFactor) {
-        this.pheromoneFactor = pheromoneFactor;
+
+    public AcoPheromoneUpdateBasedOnPathLength(Cities cities, int pheromoneAmount, int numAnts, int numIterations,
+            int beta) {
         super(cities, pheromoneAmount, numAnts, numIterations, beta);
     }
 
+
     /**
      * Updates pheromone levels based on the solution found by the ant.
-     * If the solution is better then ant leaves more pheromone on the path.
-     * The amount of pheromones is constant for every visited edge and depends on
-     * the path length.
+     * The amount of pheromones is const for every visited edge and depends on the
+     * path length.
      * 
      * @param visitedCities the array of visited cities
-     * @param distance      the distance of the path
      */
     @Override
     protected void updatePheromones(boolean[] visitedCities, double distance) {
-        double deltaPheromone = 0;
-        if (isBetterSolution) {
-            deltaPheromone = pheromoneAmount * pheromoneFactor / distance;
-
-        } else {
-            deltaPheromone = pheromoneAmount / distance;
-
-        }
+        double deltaPheromone = pheromoneAmount / distance;
         for (int i = 0; i < numCities; i++) {
             for (int j = 0; j < numCities; j++) {
                 if (i != j && visitedCities[i] && visitedCities[j]) {
@@ -62,7 +51,7 @@ public class AcoAlgorithmMorePheromoneWhenBetterSolution extends AcoAlgorithm {
     /**
      * Runs the ACO algorithm to find the best path. Pheromones are updated after
      * each ant's solution.
-     * For better solution pheromones are multiplied by the given factor.
+     * For every solution amount of pheromones is the same
      */
     @Override
     public void runAlgorithm() {
@@ -91,15 +80,12 @@ public class AcoAlgorithmMorePheromoneWhenBetterSolution extends AcoAlgorithm {
                     if (distance < bestDistance) {
                         bestDistance = distance;
                         bestPath = path.clone();
-                        isBetterSolution = true;
                     }
                     updatePheromones(visitedCities, distance);
                 }
-                isBetterSolution = false; // Reset the flag for the next ant
             }
 
             evaporatePheromones();
         }
     }
-
 }
