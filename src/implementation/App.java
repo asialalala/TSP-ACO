@@ -31,7 +31,7 @@ public class App {
 //        // Start ACO Algorithm
 //        System.out.println("\n== Running ACO Algorithm ==");
 
-        AcoAlgorithm aco = new AcoAlgorithm(cities, 100, 50, 100,1);
+        AcoAlgorithm aco = new AcoPheromoneUpdateBasedOnPathLength(cities, 100, 50, 100,1);
         aco.runAlgorithm();
 
         int[] bestPath = aco.getBestPath();

@@ -15,7 +15,7 @@ public class CitiesTest {
     @Test
     public void testInitializeMatrix() throws IOException {
         TSPReader tspReader = new TSPReader();
-        Map<Integer, Coordinates<Integer, Integer>> coordinates = tspReader.readTSPFile("src/data/smallerTSPs/xqf131.tsp");
+        Map<Integer, Coordinates<Integer, Integer>> coordinates = tspReader.readTSPFile("src/data/xqf131.tsp");
 
         // Arrange and act
         Cities cities = new Cities(coordinates);
