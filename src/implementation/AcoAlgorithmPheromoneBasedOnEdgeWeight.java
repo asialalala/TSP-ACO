@@ -1,47 +1,37 @@
-package implementation.AcoAlgorithms;
+package implementation;
 
-import implementation.Cities;
-import implementation.Utility;
 
-public class AcoUpdatePheromoneOnlyForBetterPath extends AcoAlgorithm {
+public class AcoAlgorithmPheromoneBasedOnEdgeWeight extends AcoAlgorithm {
 
-    public AcoUpdatePheromoneOnlyForBetterPath(Cities cities, int pheromoneAmount, int numAnts,
+    public AcoAlgorithmPheromoneBasedOnEdgeWeight(Cities cities, int pheromoneAmount, int numAnts,
             int numIterations, int beta) {
         super(cities, pheromoneAmount, numAnts, numIterations, beta);
     }
 
     /**
-     * Updates pheromone levels based on the solution found by the ant.
-     * Pheromones are only updated if the solution is better than the previous best.
-     * The amount of pheromones is constant for every visited edge and depends on
-     * the path length.
+     * Updates pheromone levels based on the edge weight (length).
      * 
      * @param visitedCities the array of visited cities
-     * @param distance      the distance of the path
+     * @param currentCity   the current city
+     * @param nextCity      the next city to visit
      */
     @Override
-    protected void updatePheromones(boolean[] visitedCities, double distance) {
-        double deltaPheromone = pheromoneAmount / distance;
-        for (int i = 0; i < numCities; i++) {
-            for (int j = 0; j < numCities; j++) {
-                if (i != j && visitedCities[i] && visitedCities[j]) {
-                    pheromoneMatrix[Utility.getIndex(i, j)] += deltaPheromone;
-                }
-            }
-        }
+    protected void updatePheromones(int currentCity, int nextCity) {
+        double deltaPheromone = pheromoneAmount / cities.getDistance(currentCity, nextCity);
+        pheromoneMatrix[Utility.getIndex(currentCity, nextCity)] += deltaPheromone;
     }
 
     /**
      * This method is not used in this algorithm.
      */
     @Override
-    protected void updatePheromones(int currentCity, int nextCity) {
+    protected void updatePheromones(boolean[] visitedCities, double distance) {
         throw new UnsupportedOperationException("Invalid operation for update pheromones.");
     }
 
     /**
-     * Runs the ACO algorithm to find the best path. Pheromones are updated only for
-     * better solutions.
+     * Runs the ACO algorithm to find the best path. Pheromones are updated after
+     * each ant's step.
      */
     @Override
     public void runAlgorithm() {
@@ -63,6 +53,8 @@ public class AcoUpdatePheromoneOnlyForBetterPath extends AcoAlgorithm {
                     path[step] = nextCity;
                     visitedCities[nextCity] = true;
                     currentCity = nextCity;
+                    updatePheromones(visitedCities, nextCity);
+
                 }
 
                 if (success) {
@@ -70,11 +62,10 @@ public class AcoUpdatePheromoneOnlyForBetterPath extends AcoAlgorithm {
                     if (distance < bestDistance) {
                         bestDistance = distance;
                         bestPath = path.clone();
-                        updatePheromones(visitedCities, distance);
                     }
                 }
             }
+            evaporatePheromones();
         }
     }
-
 }

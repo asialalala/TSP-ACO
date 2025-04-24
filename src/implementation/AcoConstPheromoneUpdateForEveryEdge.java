@@ -1,26 +1,11 @@
-package implementation.AcoAlgorithms;
+package implementation;
 
-import implementation.Cities;
-import implementation.Utility;
 
-public class AcoAlgorithmPheromoneBasedOnEdgeWeight extends AcoAlgorithm {
+public class AcoConstPheromoneUpdateForEveryEdge extends AcoAlgorithm {
 
-    public AcoAlgorithmPheromoneBasedOnEdgeWeight(Cities cities, int pheromoneAmount, int numAnts,
+    public AcoConstPheromoneUpdateForEveryEdge(Cities cities, int pheromoneAmount, int numAnts,
             int numIterations, int beta) {
         super(cities, pheromoneAmount, numAnts, numIterations, beta);
-    }
-
-    /**
-     * Updates pheromone levels based on the edge weight (length).
-     * 
-     * @param visitedCities the array of visited cities
-     * @param currentCity   the current city
-     * @param nextCity      the next city to visit
-     */
-    @Override
-    protected void updatePheromones(int currentCity, int nextCity) {
-        double deltaPheromone = pheromoneAmount / cities.getDistance(currentCity, nextCity);
-        pheromoneMatrix[Utility.getIndex(currentCity, nextCity)] += deltaPheromone;
     }
 
     /**
@@ -29,12 +14,18 @@ public class AcoAlgorithmPheromoneBasedOnEdgeWeight extends AcoAlgorithm {
     @Override
     protected void updatePheromones(boolean[] visitedCities, double distance) {
         throw new UnsupportedOperationException("Invalid operation for update pheromones.");
+
     }
 
     /**
-     * Runs the ACO algorithm to find the best path. Pheromones are updated after
-     * each ant's step.
+     * Updates pheromone levels, the same value for every edge.
      */
+    @Override
+    protected void updatePheromones(int currentCity, int nextCity) {
+        double deltaPheromone = pheromoneAmount;
+        pheromoneMatrix[Utility.getIndex(currentCity, nextCity)] += deltaPheromone;
+    }
+
     @Override
     public void runAlgorithm() {
         for (int iteration = 0; iteration < this.numIterations; iteration++) {
@@ -55,8 +46,7 @@ public class AcoAlgorithmPheromoneBasedOnEdgeWeight extends AcoAlgorithm {
                     path[step] = nextCity;
                     visitedCities[nextCity] = true;
                     currentCity = nextCity;
-                    updatePheromones(visitedCities, nextCity);
-
+                    updatePheromones(currentCity, nextCity);
                 }
 
                 if (success) {
@@ -67,7 +57,9 @@ public class AcoAlgorithmPheromoneBasedOnEdgeWeight extends AcoAlgorithm {
                     }
                 }
             }
+
             evaporatePheromones();
         }
     }
+
 }

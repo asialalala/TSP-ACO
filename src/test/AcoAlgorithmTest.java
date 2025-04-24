@@ -11,7 +11,7 @@ import implementation.TSPReader;
 import org.junit.Test;
 
 import implementation.AcoAlgorithm;
-import implementation.AcoAlgorithmConstPheromoneAfterSolution;
+import implementation.AcoPheromoneUpdateBasedOnPathLength;
 import implementation.Cities;
 
 public class AcoAlgorithmTest {
@@ -23,7 +23,7 @@ public class AcoAlgorithmTest {
         Map<Integer, Pair<Integer, Integer>> coordinates = tspReader.readTSPFile("src/data/smallerTSPs/test.tsp");
 
         Cities cities = new Cities(coordinates);
-        AcoAlgorithm acoAlgorithm = new AcoAlgorithmConstPheromoneAfterSolution(cities, 1, 1, 1,1);
+        AcoAlgorithm acoAlgorithm = new AcoPheromoneUpdateBasedOnPathLength(cities, 1, 1, 1,1);
         boolean[] visitedCities = new boolean[cities.getMatrix().length];
         visitedCities[0] = true; // Mark the first city as visited
         int currentCity = 0;

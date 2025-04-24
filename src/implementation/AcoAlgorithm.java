@@ -1,4 +1,4 @@
-package implementation.AcoAlgorithms;
+package implementation;
 
 import implementation.Cities;
 import implementation.Utility;
