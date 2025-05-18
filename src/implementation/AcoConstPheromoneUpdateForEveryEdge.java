@@ -1,11 +1,13 @@
 package implementation;
 
 
+import java.util.Random;
+
 public class AcoConstPheromoneUpdateForEveryEdge extends AcoAlgorithm {
 
-    public AcoConstPheromoneUpdateForEveryEdge(Cities cities, int pheromoneAmount, int numAnts,
-            int numIterations, int beta) {
-        super(cities, pheromoneAmount, numAnts, numIterations, beta);
+    public AcoConstPheromoneUpdateForEveryEdge(Random generator, Cities cities, int pheromoneAmount, int numAnts,
+                                               int numIterations, double alpha, double beta, double evaporationRate) {
+        super(generator, cities, pheromoneAmount, numAnts, numIterations, alpha, beta, evaporationRate);
     }
 
     /**
@@ -32,7 +34,7 @@ public class AcoConstPheromoneUpdateForEveryEdge extends AcoAlgorithm {
             for (int ant = 0; ant < this.numAnts; ant++) {
                 boolean[] visitedCities = new boolean[numCities];
                 int[] path = new int[numCities];
-                int currentCity = (int) (Math.random() * numCities);
+                int currentCity = (int) (super.generator.nextDouble() * numCities);
                 path[0] = currentCity;
                 visitedCities[currentCity] = true;
 

@@ -1,13 +1,18 @@
 package implementation;
 
+import java.util.Random;
+
 public abstract class AcoAlgorithm {
+    protected Random generator;
     protected Cities cities;
     protected double[] pheromoneMatrix;
     protected int numCities;
     protected int pheromoneAmount;
     protected int numAnts;
     protected int numIterations;
-    protected int beta;
+    protected double alpha;
+    protected double beta;
+    protected double evaporationRate;
     protected int[] bestPath;
     protected int bestDistance = Integer.MAX_VALUE;
 
@@ -25,13 +30,16 @@ public abstract class AcoAlgorithm {
      * @param numIterations   the number of iterations to be performed
      * @param beta            the parameter for distance influence
      */
-    AcoAlgorithm(Cities cities, int pheromoneAmount, int numAnts, int numIterations, int beta) {
+    AcoAlgorithm(Random generator, Cities cities, int pheromoneAmount, int numAnts, int numIterations, double alpha, double beta, double evaporationRate) {
+        this.generator = generator;
         this.cities = cities;
         this.pheromoneAmount = pheromoneAmount;
         this.numCities = cities.getNumberOfCities();
         this.numAnts = numAnts;
         this.numIterations = numIterations;
+        this.alpha = alpha;
         this.beta = beta;
+        this.evaporationRate = evaporationRate;
 
         // Initialize pheromone matrix
         int triangleSize = numCities * (numCities - 1) / 2;
@@ -46,7 +54,7 @@ public abstract class AcoAlgorithm {
      */
     protected void evaporatePheromones() {
         for (int i = 0; i < pheromoneMatrix.length; i++) {
-            pheromoneMatrix[i] *= 0.9;
+            pheromoneMatrix[i] *= evaporationRate;
         }
     }
 
@@ -74,58 +82,101 @@ public abstract class AcoAlgorithm {
      */
     // TODO try to decrise number of loops or devide it to methods
     protected int chooseNextCity(int currentCity, boolean[] visitedCities) {
-        // Count the sum of pheromone/(distance^beta) for unvisited cities
-        double sum = 0;
-        for (int i = 0; i < numCities; i++) {
-            if (!visitedCities[i]) {
-                double pheromone = pheromoneMatrix[Utilities.getIndex(currentCity, i)];
-                int distance = cities.getDistance(currentCity, i);
-                if (distance <= 0) {
-                    return -1;
-                }
-                sum += pheromone / Math.pow(distance, beta);
-            }
-        }
-        if (sum <= 0) {
-            return -1;
-        }
-
-        // Fulfill the decision vector
-        double[] decisionVector = new double[numCities];
-        double decisionSum = 0;
-        for (int i = 0; i < numCities; i++) {
-            if (!visitedCities[i]) {
-                double pheromone = pheromoneMatrix[Utilities.getIndex(currentCity, i)];
-                int distance = cities.getDistance(currentCity, i);
-                if (distance <= 0) {
-                    return -1;
-                }
-                decisionVector[i] = (pheromone / Math.pow(distance, beta)) / sum;
-                decisionSum += decisionVector[i];
-            }
-        }
-        if (decisionSum <= 0) {
-            return -1;
-        }
-
-        // Choose the next city based on the decision vector
+//        // Count the sum of pheromone/(distance^beta) for unvisited cities
+//        double sum = 0;
+//        for (int i = 0; i < numCities; i++) {
+//            if (!visitedCities[i]) {
+//                double pheromone = Math.pow(pheromoneMatrix[Utilities.getIndex(currentCity, i)], alpha);
+//                int distance = cities.getDistance(currentCity, i);
+//                if (distance <= 0) {
+//                    return -1;
+//                }
+//                sum += pheromone * Math.pow(distance, beta);
+//            }
+//        }
+//        if (sum <= 0) {
+//            return -1;
+//        }
+//
+//        // Fulfill the decision vector
+//        double[] decisionVector = new double[numCities];
+//        double decisionSum = 0;
+//        for (int i = 0; i < numCities; i++) {
+//            if (!visitedCities[i]) {
+//                double pheromone = Math.pow(pheromoneMatrix[Utilities.getIndex(currentCity, i)], alpha);
+//                int distance = cities.getDistance(currentCity, i);
+//                if (distance <= 0) {
+//                    return -1;
+//                }
+//                decisionVector[i] = (pheromone * Math.pow(distance, beta)) / sum;
+//                decisionSum += decisionVector[i];
+//            }
+//        }
+//        if (decisionSum <= 0) {
+//            return -1;
+//        }
+//
+//        // Choose the next city based on the decision vector
+//        double[] probabilities = new double[numCities];
+//        int nextCity = 0;
+//        double highestProbability = -1.0;
+//
+//        for (int i = 0; i < numCities; i++) {
+//            if (!visitedCities[i]) {
+//                probabilities[i] = decisionVector[i] / decisionSum;
+//            } else {
+//                probabilities[i] = 0;
+//            }
+//            if (probabilities[i] > highestProbability) {
+//                highestProbability = probabilities[i];
+//                nextCity = i;
+//            }
+//        }
+//
+//        return nextCity;
         double[] probabilities = new double[numCities];
-        int nextCity = 0;
-        double highestProbability = -1.0;
+        double sum = 0.0;
 
+        // Oblicz prawdopodobieństwo wyboru dla każdego nieodwiedzonego miasta
         for (int i = 0; i < numCities; i++) {
             if (!visitedCities[i]) {
-                probabilities[i] = decisionVector[i] / decisionSum;
+                double pheromone = Math.pow(pheromoneMatrix[Utilities.getIndex(currentCity, i)], alpha);
+                int distance = cities.getDistance(currentCity, i);
+                if (distance <= 0) return -1; // błąd w danych
+                double desirability = pheromone * Math.pow(1.0 / distance, beta);
+                probabilities[i] = desirability;
+                sum += desirability;
             } else {
                 probabilities[i] = 0;
             }
-            if (probabilities[i] > highestProbability) {
-                highestProbability = probabilities[i];
-                nextCity = i;
+        }
+
+        if (sum <= 0) return -1;
+
+        // Normalizacja do prawdopodobieństw
+        for (int i = 0; i < numCities; i++) {
+            probabilities[i] /= sum;
+        }
+
+        // Stochastyczny wybór na podstawie rozkładu
+        double rand = generator.nextDouble();
+        double cumulative = 0.0;
+
+        for (int i = 0; i < numCities; i++) {
+            cumulative += probabilities[i];
+            if (rand <= cumulative) {
+                return i;
             }
         }
 
-        return nextCity;
+        // Fallback – w przypadku błędów numerycznych
+        for (int i = 0; i < numCities; i++) {
+            if (!visitedCities[i]) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
 

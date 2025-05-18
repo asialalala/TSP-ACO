@@ -1,6 +1,8 @@
 package implementation;
 
 
+import java.util.Random;
+
 public class AcoAlgorithmMorePheromoneWhenBetterPath extends AcoAlgorithm {
     private boolean isBetterSolution = false;
     private double pheromoneFactor;
@@ -14,11 +16,11 @@ public class AcoAlgorithmMorePheromoneWhenBetterPath extends AcoAlgorithm {
      * @param numIterations   the number of iterations to be performed
      * @param beta            the parameter for distance influence
      */
-    public AcoAlgorithmMorePheromoneWhenBetterPath(Cities cities, int pheromoneAmount, int numAnts,
-            int numIterations,
-            int beta, double pheromoneFactor) {
+    public AcoAlgorithmMorePheromoneWhenBetterPath(Random generator, Cities cities, int pheromoneAmount, int numAnts,
+                                                   int numIterations, double alpha, double beta, double evaporationRate,
+                                                   double pheromoneFactor) {
+        super(generator, cities, pheromoneAmount, numAnts, numIterations, alpha, beta, evaporationRate);
         this.pheromoneFactor = pheromoneFactor;
-        super(cities, pheromoneAmount, numAnts, numIterations, beta);
     }
 
     /**
@@ -68,7 +70,7 @@ public class AcoAlgorithmMorePheromoneWhenBetterPath extends AcoAlgorithm {
             for (int ant = 0; ant < this.numAnts; ant++) {
                 boolean[] visitedCities = new boolean[numCities];
                 int[] path = new int[numCities];
-                int currentCity = (int) (Math.random() * numCities);
+                int currentCity = (int) (super.generator.nextDouble() * numCities);
                 path[0] = currentCity;
                 visitedCities[currentCity] = true;
 
@@ -85,6 +87,8 @@ public class AcoAlgorithmMorePheromoneWhenBetterPath extends AcoAlgorithm {
                 }
 
                 if (success) {
+                    // path = apply2Opt(path);
+
                     int distance = calculateTotalDistance(path);
                     if (distance < bestDistance) {
                         bestDistance = distance;
@@ -97,6 +101,43 @@ public class AcoAlgorithmMorePheromoneWhenBetterPath extends AcoAlgorithm {
             }
 
             evaporatePheromones();
+        }
+    }
+
+    private int[] apply2Opt(int[] path) {
+        boolean improvement = true;
+        int size = path.length;
+
+        while (improvement) {
+            improvement = false;
+            for (int i = 1; i < size - 2; i++) {
+                for (int j = i + 1; j < size - 1; j++) {
+                    int a = path[i - 1];
+                    int b = path[i];
+                    int c = path[j];
+                    int d = path[j + 1];
+
+                    int currentDistance = cities.getDistance(a, b) + cities.getDistance(c, d);
+                    int newDistance = cities.getDistance(a, c) + cities.getDistance(b, d);
+
+                    if (newDistance < currentDistance) {
+                        reverseSubPath(path, i, j);
+                        improvement = true;
+                    }
+                }
+            }
+        }
+
+        return path;
+    }
+
+    private void reverseSubPath(int[] path, int start, int end) {
+        while (start < end) {
+            int temp = path[start];
+            path[start] = path[end];
+            path[end] = temp;
+            start++;
+            end--;
         }
     }
 
