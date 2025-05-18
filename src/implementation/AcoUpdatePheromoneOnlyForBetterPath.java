@@ -74,6 +74,7 @@ public class AcoUpdatePheromoneOnlyForBetterPath extends AcoAlgorithm {
                     }
                 }
             }
+            evaporatePheromones();
         }
     }
 
