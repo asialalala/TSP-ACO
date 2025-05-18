@@ -6,7 +6,8 @@ import java.util.Random;
 public class AcoAlgorithmPheromoneBasedOnEdgeWeight extends AcoAlgorithm {
 
     public AcoAlgorithmPheromoneBasedOnEdgeWeight(Random generator, Cities cities, int pheromoneAmount, int numAnts,
-                                                  int numIterations, double alpha, double beta, double evaporationRate) {
+                                                  int numIterations, double alpha, double beta, double evaporationRate,
+                                                  double pheromoneFactor) {
         super(generator, cities, pheromoneAmount, numAnts, numIterations, alpha, beta, evaporationRate);
     }
 

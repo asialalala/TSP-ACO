@@ -6,7 +6,8 @@ import java.util.Random;
 public class AcoUpdatePheromoneOnlyForBetterPath extends AcoAlgorithm {
 
     public AcoUpdatePheromoneOnlyForBetterPath(Random generator, Cities cities, int pheromoneAmount, int numAnts,
-                                               int numIterations, double alpha, double beta, double evaporationRate) {
+                                               int numIterations, double alpha, double beta, double evaporationRate,
+                                               double pheromoneFactor) {
         super(generator, cities, pheromoneAmount, numAnts, numIterations, alpha, beta, evaporationRate);
     }
 
