@@ -59,9 +59,6 @@ public abstract class AcoAlgorithm {
     protected void evaporatePheromones() {
         for (int i = 0; i < pheromoneMatrix.length; i++) {
             pheromoneMatrix[i] *= evaporationRate;
-            if(pheromoneMatrix[i] < 0.0001) {
-                pheromoneMatrix[i] = 0.0001; // Prevent pheromone from disappearing completely
-            }
         }
     }
 
