@@ -52,10 +52,11 @@ public class AcoAlgorithmPheromoneBasedOnEdgeWeight extends AcoAlgorithm {
                         success = false;
                         break;
                     }
+                    // Update pheromones after each step
+                    updatePheromones(currentCity, nextCity);
                     path[step] = nextCity;
                     visitedCities[nextCity] = true;
                     currentCity = nextCity;
-                    updatePheromones(visitedCities, nextCity);
 
                 }
 
