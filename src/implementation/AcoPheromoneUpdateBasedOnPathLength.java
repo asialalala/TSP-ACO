@@ -15,7 +15,8 @@ public class AcoPheromoneUpdateBasedOnPathLength extends AcoAlgorithm {
      */
 
     public AcoPheromoneUpdateBasedOnPathLength(Random generator, Cities cities, int pheromoneAmount, int numAnts,
-                                               int numIterations, double alpha, double beta, double evaporationRate) {
+                                               int numIterations, double alpha, double beta, double evaporationRate,
+                                               double pheromoneFactor) {
         super(generator, cities, pheromoneAmount, numAnts, numIterations, alpha, beta, evaporationRate);
     }
 

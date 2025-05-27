@@ -41,6 +41,10 @@ public abstract class AcoAlgorithm {
         this.beta = beta;
         this.evaporationRate = evaporationRate;
 
+        if(evaporationRate > 1.0 || evaporationRate < 0.0) {
+            throw new IllegalArgumentException("Evaporation rate must be between 0 and 1");
+        }
+
         // Initialize pheromone matrix
         int triangleSize = numCities * (numCities - 1) / 2;
         this.pheromoneMatrix = new double[triangleSize];
