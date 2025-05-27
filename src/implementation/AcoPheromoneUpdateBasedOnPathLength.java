@@ -75,6 +75,8 @@ public class AcoPheromoneUpdateBasedOnPathLength extends AcoAlgorithm {
                 }
 
                 if (success) {
+                    // path = super.apply2Opt(path);
+
                     int distance = calculateTotalDistance(path);
                     if (distance < bestDistance) {
                         bestDistance = distance;

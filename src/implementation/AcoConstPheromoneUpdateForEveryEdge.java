@@ -45,13 +45,15 @@ public class AcoConstPheromoneUpdateForEveryEdge extends AcoAlgorithm {
                         success = false;
                         break;
                     }
+                    updatePheromones(currentCity, nextCity);
                     path[step] = nextCity;
                     visitedCities[nextCity] = true;
                     currentCity = nextCity;
-                    updatePheromones(currentCity, nextCity);
                 }
 
                 if (success) {
+                    // path = super.apply2Opt(path);
+
                     int distance = calculateTotalDistance(path);
                     if (distance < bestDistance) {
                         bestDistance = distance;

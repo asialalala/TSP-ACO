@@ -13,6 +13,28 @@ The workspace contains two folders by default, where:
 
 Meanwhile, the compiled output files will be generated in the `bin` folder by default.
 
+## Usage
+
+To run the project and solve a .tsp file instance using the ACO algorithm, use the provided `run.sh` script.
+
+**Requirements**
+- Java (e.g., OpenJDK)
+- Python 3 (only if you want to visualize results)
+- Required Python packages (e.g., matplotlib, networkx)
+- Compiled Java classes in out/production/TSP-ACO
+
+**Running the Algorithm**
+
+Use the Bash script like this:
+
+`./run.sh <path_to_tsp_file> [-p]`
+
+- `<path_to_tsp_file>`: Path to the .tsp input file (required).
+
+- `-p`: Optional flag to visualize the result using a Python script.
+
+The script will print the best path and its length. If `-p` is provided, the best path will also be passed to the Python visualizer.
+
 ## Cities Class
 
 The `Cities` class is responsible for managing the distance matrix between cities. It includes:

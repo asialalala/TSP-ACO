@@ -82,58 +82,6 @@ public abstract class AcoAlgorithm {
      */
     // TODO try to decrise number of loops or devide it to methods
     protected int chooseNextCity(int currentCity, boolean[] visitedCities) {
-//        // Count the sum of pheromone/(distance^beta) for unvisited cities
-//        double sum = 0;
-//        for (int i = 0; i < numCities; i++) {
-//            if (!visitedCities[i]) {
-//                double pheromone = Math.pow(pheromoneMatrix[Utilities.getIndex(currentCity, i)], alpha);
-//                int distance = cities.getDistance(currentCity, i);
-//                if (distance <= 0) {
-//                    return -1;
-//                }
-//                sum += pheromone * Math.pow(distance, beta);
-//            }
-//        }
-//        if (sum <= 0) {
-//            return -1;
-//        }
-//
-//        // Fulfill the decision vector
-//        double[] decisionVector = new double[numCities];
-//        double decisionSum = 0;
-//        for (int i = 0; i < numCities; i++) {
-//            if (!visitedCities[i]) {
-//                double pheromone = Math.pow(pheromoneMatrix[Utilities.getIndex(currentCity, i)], alpha);
-//                int distance = cities.getDistance(currentCity, i);
-//                if (distance <= 0) {
-//                    return -1;
-//                }
-//                decisionVector[i] = (pheromone * Math.pow(distance, beta)) / sum;
-//                decisionSum += decisionVector[i];
-//            }
-//        }
-//        if (decisionSum <= 0) {
-//            return -1;
-//        }
-//
-//        // Choose the next city based on the decision vector
-//        double[] probabilities = new double[numCities];
-//        int nextCity = 0;
-//        double highestProbability = -1.0;
-//
-//        for (int i = 0; i < numCities; i++) {
-//            if (!visitedCities[i]) {
-//                probabilities[i] = decisionVector[i] / decisionSum;
-//            } else {
-//                probabilities[i] = 0;
-//            }
-//            if (probabilities[i] > highestProbability) {
-//                highestProbability = probabilities[i];
-//                nextCity = i;
-//            }
-//        }
-//
-//        return nextCity;
         double[] probabilities = new double[numCities];
         double sum = 0.0;
 
@@ -177,6 +125,43 @@ public abstract class AcoAlgorithm {
         }
 
         return -1;
+    }
+
+    protected int[] apply2Opt(int[] path) {
+        boolean improvement = true;
+        int size = path.length;
+
+        while (improvement) {
+            improvement = false;
+            for (int i = 1; i < size - 2; i++) {
+                for (int j = i + 1; j < size - 1; j++) {
+                    int a = path[i - 1];
+                    int b = path[i];
+                    int c = path[j];
+                    int d = path[j + 1];
+
+                    int currentDistance = cities.getDistance(a, b) + cities.getDistance(c, d);
+                    int newDistance = cities.getDistance(a, c) + cities.getDistance(b, d);
+
+                    if (newDistance < currentDistance) {
+                        reverseSubPath(path, i, j);
+                        improvement = true;
+                    }
+                }
+            }
+        }
+
+        return path;
+    }
+
+    private void reverseSubPath(int[] path, int start, int end) {
+        while (start < end) {
+            int temp = path[start];
+            path[start] = path[end];
+            path[end] = temp;
+            start++;
+            end--;
+        }
     }
 
 

@@ -12,8 +12,7 @@ public class AcoAlgorithmPheromoneBasedOnEdgeWeight extends AcoAlgorithm {
 
     /**
      * Updates pheromone levels based on the edge weight (length).
-     * 
-     * @param visitedCities the array of visited cities
+     *
      * @param currentCity   the current city
      * @param nextCity      the next city to visit
      */
@@ -52,14 +51,15 @@ public class AcoAlgorithmPheromoneBasedOnEdgeWeight extends AcoAlgorithm {
                         success = false;
                         break;
                     }
+                    updatePheromones(currentCity, nextCity);
                     path[step] = nextCity;
                     visitedCities[nextCity] = true;
                     currentCity = nextCity;
-                    updatePheromones(visitedCities, nextCity);
-
                 }
 
                 if (success) {
+                    path = super.apply2Opt(path);
+
                     int distance = calculateTotalDistance(path);
                     if (distance < bestDistance) {
                         bestDistance = distance;
